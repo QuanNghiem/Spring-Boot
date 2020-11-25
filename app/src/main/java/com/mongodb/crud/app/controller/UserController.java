@@ -65,4 +65,15 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<User> updateCustomer(String id, User user, HttpServletRequest request) {
+        try {
+            user.setUpdatedOn(new Date());
+            User _user = userServ.updateUser(id, user);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(_user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
