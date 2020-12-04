@@ -1,5 +1,6 @@
 package com.mongodb.crud.app.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,15 +24,48 @@ public class UserService {
         return repo.findAll();
     }
 
+    public List<User> getAvailableUsers() {
+        return repo.findByDeleteFlag(false);
+    }
+
     public Optional<User> getUserById(String id) {
         return repo.findById(id);
+    }
+
+    public User loginUser(User user) {
+
+        Optional<User> userOpt = repo.findByUsername(user.getUsername());
+
+        if (userOpt.isPresent()) {
+            User _user = userOpt.get();
+            if (user.getPassword().equals(_user.getPassword())) {
+                return _user;
+            }
+        }
+        return null;
+    }
+
+    public boolean verifyUser(String id) {
+        Optional<User> userOpt = this.getUserById(id);
+
+        if (!userOpt.isPresent()) {
+            return false;
+        }
+
+        User _user = userOpt.get();
+
+        if (_user.getType() == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public User updateUser(String id, User user) throws UserException {
         Optional<User> userOpt = this.getUserById(id);
 
         if (!userOpt.isPresent()) {
-            throw new UserException("404", "Can not find a customer for updating with id = " + id);
+            throw new UserException("404", "Can not find a user for updating with id = " + id);
         }
 
         User _user = userOpt.get();
@@ -41,10 +75,30 @@ public class UserService {
         _user.setType(user.getType());
         _user.setEmail(user.getEmail());
         _user.setPNo(user.getPNo());
-        _user.setUpdatedOn(user.getUpdatedOn());
+        _user.setUpdatedOn(new Date());
 
         repo.save(_user);
 
         return (_user);
+    }
+
+    public User markUser(String id) throws UserException {
+        Optional<User> userOpt = this.getUserById(id);
+
+        if (!userOpt.isPresent()) {
+            throw new UserException("404", "Can not find a user for updating with id = " + id);
+        }
+
+        User _user = userOpt.get();
+        _user.setDeleteFlag(true);
+        _user.setUpdatedOn(new Date());
+
+        repo.save(_user);
+
+        return (_user);
+    }
+
+    public void deleteUserById(String id) {
+        repo.deleteById(id);
     }
 }

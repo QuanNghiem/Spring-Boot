@@ -9,14 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class User {
     @Id
-    private String id;
+    private String _id;
 
     @Indexed(unique = true)
     private String username;
 
     private String password;
     private Integer type;
-    private Integer pNo;
+    private String pNo;
     private String email;
     private Date updatedOn;
     private Boolean deleteFlag;
@@ -24,9 +24,9 @@ public class User {
     public User() {
     }
 
-    public User(String id, String username, String password, Integer type, Integer pNo, String email, Date updatedOn,
+    public User(String _id, String username, String password, Integer type, String pNo, String email, Date updatedOn,
             Boolean deleteFlag) {
-        this.id = id;
+        this._id = _id;
         this.username = username;
         this.password = password;
         this.type = type;
@@ -37,12 +37,12 @@ public class User {
     }
 
     // #region Getter/Setter
-    public String getId() {
-        return this.id;
+    public String get_id() {
+        return this._id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getUsername() {
@@ -69,11 +69,11 @@ public class User {
         this.type = type;
     }
 
-    public Integer getPNo() {
+    public String getPNo() {
         return this.pNo;
     }
 
-    public void setPNo(Integer pNo) {
+    public void setPNo(String pNo) {
         this.pNo = pNo;
     }
 
@@ -105,8 +105,8 @@ public class User {
         this.deleteFlag = deleteFlag;
     }
 
-    public User id(String id) {
-        this.id = id;
+    public User _id(String _id) {
+        this._id = _id;
         return this;
     }
 
@@ -125,7 +125,7 @@ public class User {
         return this;
     }
 
-    public User pNo(Integer pNo) {
+    public User pNo(String pNo) {
         this.pNo = pNo;
         return this;
     }
