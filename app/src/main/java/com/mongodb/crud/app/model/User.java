@@ -24,9 +24,8 @@ public class User {
     public User() {
     }
 
-    public User(String _id, String username, String password, Integer type, String pNo, String email, Date updatedOn,
+    public User(String username, String password, Integer type, String pNo, String email, Date updatedOn,
             Boolean deleteFlag) {
-        this._id = _id;
         this.username = username;
         this.password = password;
         this.type = type;

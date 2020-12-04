@@ -28,6 +28,10 @@ public class UserService {
         return repo.findByDeleteFlag(false);
     }
 
+    public List<User> getMarkedUsers() {
+        return repo.findByDeleteFlag(true);
+    }
+
     public Optional<User> getUserById(String id) {
         return repo.findById(id);
     }
@@ -91,6 +95,22 @@ public class UserService {
 
         User _user = userOpt.get();
         _user.setDeleteFlag(true);
+        _user.setUpdatedOn(new Date());
+
+        repo.save(_user);
+
+        return (_user);
+    }
+
+    public User unmarkUser(String id) throws UserException {
+        Optional<User> userOpt = this.getUserById(id);
+
+        if (!userOpt.isPresent()) {
+            throw new UserException("404", "Can not find a user for updating with id = " + id);
+        }
+
+        User _user = userOpt.get();
+        _user.setDeleteFlag(false);
         _user.setUpdatedOn(new Date());
 
         repo.save(_user);
