@@ -81,9 +81,7 @@ public class UserService {
         _user.setPNo(user.getPNo());
         _user.setUpdatedOn(new Date());
 
-        repo.save(_user);
-
-        return (_user);
+        return repo.save(_user);
     }
 
     public User markUser(String id) throws UserException {
@@ -97,9 +95,7 @@ public class UserService {
         _user.setDeleteFlag(true);
         _user.setUpdatedOn(new Date());
 
-        repo.save(_user);
-
-        return (_user);
+        return repo.save(_user);
     }
 
     public User unmarkUser(String id) throws UserException {
@@ -113,9 +109,7 @@ public class UserService {
         _user.setDeleteFlag(false);
         _user.setUpdatedOn(new Date());
 
-        repo.save(_user);
-
-        return (_user);
+        return repo.save(_user);
     }
 
     public void deleteUserById(String id) {

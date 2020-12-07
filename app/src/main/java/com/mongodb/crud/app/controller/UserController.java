@@ -118,8 +118,18 @@ public class UserController {
         }
     }
 
+    @PutMapping("/unmarkUser")
+    public ResponseEntity<User> unmarkUser(String _id, HttpServletRequest request) {
+        try {
+            User _user = userServ.unmarkUser(_id);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(_user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @DeleteMapping("/deletebyid/{id}")
-    public ResponseEntity<Boolean> deleteCustomerById(@PathVariable String id, HttpServletRequest request) {
+    public ResponseEntity<Boolean> deleteUserById(@PathVariable String id, HttpServletRequest request) {
         try {
             // delete a Customer from MongoDB database using ID
             userServ.deleteUserById(id);

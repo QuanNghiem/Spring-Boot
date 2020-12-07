@@ -53,9 +53,7 @@ public class EventService {
         _event.setPrice(event.getPrice());
         _event.setUpdatedOn(new Date());
 
-        repo.save(_event);
-
-        return (_event);
+        return repo.save(_event);
     }
 
     public Event markEvent(String id) throws UserException {
@@ -69,9 +67,7 @@ public class EventService {
         _event.setUpdatedOn(new Date());
         _event.setDeleteFlag(true);
 
-        repo.save(_event);
-
-        return (_event);
+        return repo.save(_event);
     }
 
     public Event unmarkEvent(String id) throws UserException {
@@ -85,9 +81,7 @@ public class EventService {
         _event.setUpdatedOn(new Date());
         _event.setDeleteFlag(false);
 
-        repo.save(_event);
-
-        return (_event);
+        return repo.save(_event);
     }
 
     public void deleteEventById(String id) {

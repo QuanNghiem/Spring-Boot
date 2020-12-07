@@ -2,7 +2,6 @@ package com.mongodb.crud.app.security;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -90,6 +89,23 @@ public class JwtTokenUtil {
             }
         } else {
             return false;
+        }
+    }
+
+    public String getUserIdFromToken(HttpServletRequest request) {
+        final String requestTokenHeader = request.getHeader("Authorization");
+
+        // JWT Token is in the form "Bearer token".
+        // Remove Bearer word and get only the token
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            String jwtToken = requestTokenHeader.substring(7);
+            try {
+                return this.getUserID(jwtToken);
+            } catch (Exception e) {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 }

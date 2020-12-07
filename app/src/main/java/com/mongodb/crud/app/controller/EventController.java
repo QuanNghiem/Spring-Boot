@@ -41,7 +41,7 @@ public class EventController {
     }
 
     @GetMapping("/getEvents")
-    public ResponseEntity<List<Event>> getUsers() {
+    public ResponseEntity<List<Event>> getEvents() {
         try {
             List<Event> eventList = eventServ.getAllEvent();
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventList);
@@ -51,7 +51,7 @@ public class EventController {
     }
 
     @GetMapping("/getAvailableEvents")
-    public ResponseEntity<List<Event>> getAvailableUsers() {
+    public ResponseEntity<List<Event>> getAvailableEvents() {
         try {
             List<Event> eventList = eventServ.getAvailableEvents();
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventList);
@@ -61,7 +61,7 @@ public class EventController {
     }
 
     @PostMapping("/getEvent")
-    public ResponseEntity<Event> getUserByID(String id, HttpServletRequest request) {
+    public ResponseEntity<Event> getEventByID(String id, HttpServletRequest request) {
         try {
             Optional<Event> eventOpt = eventServ.getEventById(id);
 
@@ -76,9 +76,9 @@ public class EventController {
     }
 
     @PutMapping("/updateEvent")
-    public ResponseEntity<Event> updateUser(String _id, Event Event, HttpServletRequest request) {
+    public ResponseEntity<Event> updateEvent(String _id, Event event, HttpServletRequest request) {
         try {
-            Event _event = eventServ.updateEvent(_id, Event);
+            Event _event = eventServ.updateEvent(_id, event);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(_event);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -86,7 +86,7 @@ public class EventController {
     }
 
     @PutMapping("/markEvent")
-    public ResponseEntity<Event> markUser(String _id, HttpServletRequest request) {
+    public ResponseEntity<Event> markEvent(String _id, HttpServletRequest request) {
         try {
             Event _event = eventServ.markEvent(_id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(_event);
@@ -95,8 +95,18 @@ public class EventController {
         }
     }
 
+    @PutMapping("/unmarkEvent")
+    public ResponseEntity<Event> unmarkEvent(String _id, HttpServletRequest request) {
+        try {
+            Event _event = eventServ.unmarkEvent(_id);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(_event);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @DeleteMapping("/deletebyid/{id}")
-    public ResponseEntity<Boolean> deleteCustomerById(@PathVariable String id, HttpServletRequest request) {
+    public ResponseEntity<Boolean> deleteEventById(@PathVariable String id, HttpServletRequest request) {
         try {
             eventServ.deleteEventById(id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
