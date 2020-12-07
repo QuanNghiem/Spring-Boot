@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.mongodb.crud.app.model.User;
 import com.mongodb.crud.app.service.UserService;
 

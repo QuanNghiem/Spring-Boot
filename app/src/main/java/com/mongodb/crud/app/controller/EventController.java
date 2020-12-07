@@ -28,11 +28,12 @@ public class EventController {
     EventService eventServ;
 
     @PostMapping("/addEvent")
-    public ResponseEntity<Event> addEvent(Event Event, HttpServletRequest request) {
+    public ResponseEntity<Event> addEvent(Event event, HttpServletRequest request) {
         try {
-            Event.setDeleteFlag(false);
-            Event.setUpdatedOn(new Date());
-            Event _event = eventServ.addEvent(Event);
+            event.setEventDate(new Date());
+            event.setDeleteFlag(false);
+            event.setUpdatedOn(new Date());
+            Event _event = eventServ.addEvent(event);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(_event);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
