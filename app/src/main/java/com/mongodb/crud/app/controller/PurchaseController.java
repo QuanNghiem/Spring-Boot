@@ -31,7 +31,7 @@ public class PurchaseController {
     @Autowired
     JwtTokenUtil jwtUtil;
 
-    @PostMapping("/addPurchase")
+    @PutMapping("/addPurchase")
     public ResponseEntity<Purchase> addPurchase(Purchase purchase, HttpServletRequest request) {
         try {
             String userId = jwtUtil.getUserIdFromToken(request);
@@ -66,8 +66,8 @@ public class PurchaseController {
         }
     }
 
-    @PostMapping("/getPurchase")
-    public ResponseEntity<Purchase> getPurchaseByID(String id, HttpServletRequest request) {
+    @GetMapping("/getPurchase/{id}")
+    public ResponseEntity<Purchase> getPurchaseByID(@PathVariable String id, HttpServletRequest request) {
         try {
             Optional<Purchase> purchaseOpt = serv.getPurchaseById(id);
 
@@ -81,7 +81,7 @@ public class PurchaseController {
         }
     }
 
-    @PutMapping("/updatePurchase")
+    @PostMapping("/updatePurchase")
     public ResponseEntity<Purchase> updatePurchase(String _id, Purchase purchase, HttpServletRequest request) {
         try {
             Purchase _purchase = serv.updatePurchase(_id, purchase);
@@ -91,7 +91,7 @@ public class PurchaseController {
         }
     }
 
-    @PutMapping("/markPurchase")
+    @PostMapping("/markPurchase")
     public ResponseEntity<Purchase> markPurchase(String _id, HttpServletRequest request) {
         try {
             Purchase _purchase = serv.markPurchase(_id);
@@ -101,7 +101,7 @@ public class PurchaseController {
         }
     }
 
-    @PutMapping("/unmarkPurchase")
+    @PostMapping("/unmarkPurchase")
     public ResponseEntity<Purchase> unmarkPurchase(String _id, HttpServletRequest request) {
         try {
             Purchase _purchase = serv.unmarkPurchase(_id);

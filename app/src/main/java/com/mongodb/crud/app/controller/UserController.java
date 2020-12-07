@@ -32,7 +32,7 @@ public class UserController {
     @Autowired
     UserService userServ;
 
-    @PostMapping("/addUser")
+    @PutMapping("/addUser")
     public ResponseEntity<User> addUser(User user, HttpServletRequest request) {
         try {
             user.setDeleteFlag(false);
@@ -83,8 +83,8 @@ public class UserController {
         }
     }
 
-    @PostMapping("/getUser")
-    public ResponseEntity<User> getUserByID(String id, HttpServletRequest request) {
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<User> getUserByID(@PathVariable String id, HttpServletRequest request) {
         try {
             Optional<User> userOpt = userServ.getUserById(id);
 
@@ -98,7 +98,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/updateUser")
+    @PostMapping("/updateUser")
     public ResponseEntity<User> updateUser(String _id, User user, HttpServletRequest request) {
         try {
             User _user = userServ.updateUser(_id, user);
@@ -108,7 +108,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/markUser")
+    @PostMapping("/markUser")
     public ResponseEntity<User> markUser(String _id, HttpServletRequest request) {
         try {
             User _user = userServ.markUser(_id);
@@ -118,7 +118,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/unmarkUser")
+    @PostMapping("/unmarkUser")
     public ResponseEntity<User> unmarkUser(String _id, HttpServletRequest request) {
         try {
             User _user = userServ.unmarkUser(_id);

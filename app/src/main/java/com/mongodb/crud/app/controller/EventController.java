@@ -27,7 +27,7 @@ public class EventController {
     @Autowired
     EventService eventServ;
 
-    @PostMapping("/addEvent")
+    @PutMapping("/addEvent")
     public ResponseEntity<Event> addEvent(Event event, HttpServletRequest request) {
         try {
             event.setEventDate(new Date());
@@ -60,8 +60,8 @@ public class EventController {
         }
     }
 
-    @PostMapping("/getEvent")
-    public ResponseEntity<Event> getEventByID(String id, HttpServletRequest request) {
+    @GetMapping("/getEvent/{id}")
+    public ResponseEntity<Event> getEventByID(@PathVariable String id, HttpServletRequest request) {
         try {
             Optional<Event> eventOpt = eventServ.getEventById(id);
 
@@ -75,7 +75,7 @@ public class EventController {
         }
     }
 
-    @PutMapping("/updateEvent")
+    @PostMapping("/updateEvent")
     public ResponseEntity<Event> updateEvent(String _id, Event event, HttpServletRequest request) {
         try {
             Event _event = eventServ.updateEvent(_id, event);
@@ -85,7 +85,7 @@ public class EventController {
         }
     }
 
-    @PutMapping("/markEvent")
+    @PostMapping("/markEvent")
     public ResponseEntity<Event> markEvent(String _id, HttpServletRequest request) {
         try {
             Event _event = eventServ.markEvent(_id);
@@ -95,7 +95,7 @@ public class EventController {
         }
     }
 
-    @PutMapping("/unmarkEvent")
+    @PostMapping("/unmarkEvent")
     public ResponseEntity<Event> unmarkEvent(String _id, HttpServletRequest request) {
         try {
             Event _event = eventServ.unmarkEvent(_id);
