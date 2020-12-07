@@ -2,8 +2,11 @@ package com.mongodb.crud.app.security;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.mongodb.crud.app.model.User;
 import com.mongodb.crud.app.service.UserService;
@@ -47,7 +50,6 @@ public class JwtTokenUtil {
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        System.out.println("User Id: " + user.get_id());
         return doGenerateToken(claims, user.get_id());
     }
 
@@ -57,53 +59,37 @@ public class JwtTokenUtil {
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
-    // private String decodeToken(String token) {
-    // Claims body =
-    // Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-    // return body.getId();
-    // }
-
     // retrieve userID from jwt token
     public String getUserID(String token) {
         // return decodeToken(token);
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    // Need this to work with authentication manager
-    // Spring Boot is ... more complicated than NodeJS ...........
-    public User getUser(String token) {
-        String userId = getUserID(token);
-        return serv.getUserById(userId).get();
-    }
-
-    // // validate token
-    // public Boolean validateToken(HttpServletRequest request) {
-    // final String requestTokenHeader = request.getHeader("Authorization");
-
-    // String jwtToken = null;
-
-    // // JWT Token is in the form "Bearer token".
-    // // Remove Bearer word and get only the token.
-    // if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-    // jwtToken = requestTokenHeader.substring(7);
-    // final String userId = getUserID(jwtToken);
-    // try {
-    // // if token is valid configure Spring Security to manually set authentication
-    // if (serv.verifyUser(userId) && !isTokenExpired(jwtToken)) {
-    // return true;
-    // }
-    // } catch (IllegalArgumentException e) {
-    // return false;
-    // } catch (ExpiredJwtException e) {
-    // return false;
-    // }
-    // }
-    // return false;
-    // }
-
     // validate token
     public Boolean validate(String token) {
         final String userId = getUserID(token);
         return (serv.verifyUser(userId) && !isTokenExpired(token));
+    }
+
+    public Boolean isTokenValid(HttpServletRequest request) {
+        final String requestTokenHeader = request.getHeader("Authorization");
+
+        // JWT Token is in the form "Bearer token".
+        // Remove Bearer word and get only the token
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            String jwtToken = requestTokenHeader.substring(7);
+            try {
+                // if token is valid configure Spring Security to manually set authentication
+                if (this.validate(jwtToken)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

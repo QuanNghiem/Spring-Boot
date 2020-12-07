@@ -24,33 +24,47 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    // @Override
+    // protected void doFilterInternal(HttpServletRequest request,
+    // HttpServletResponse response, FilterChain chain)
+    // throws ServletException, IOException {
+
+    // final String requestTokenHeader = request.getHeader("Authorization");
+
+    // String jwtToken = null;
+
+    // if (!excludeUrlPatterns.contains(request.getRequestURI())) {
+    // // JWT Token is in the form "Bearer token".
+    // // Remove Bearer word and get only the token
+    // if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+    // jwtToken = requestTokenHeader.substring(7);
+    // try {
+    // // if token is valid configure Spring Security to manually set authentication
+    // if (!jwtTokenUtil.validate(jwtToken)) {
+    // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401.
+    // return;
+    // }
+    // } catch (IllegalArgumentException e) {
+    // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401.
+    // return;
+    // } catch (ExpiredJwtException e) {
+    // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401.
+    // return;
+    // }
+    // } else {
+    // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401.
+    // return;
+    // }
+    // }
+    // chain.doFilter(request, response);
+    // }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        final String requestTokenHeader = request.getHeader("Authorization");
-
-        String jwtToken = null;
-
         if (!excludeUrlPatterns.contains(request.getRequestURI())) {
-            // JWT Token is in the form "Bearer token".
-            // Remove Bearer word and get only the token
-            if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-                jwtToken = requestTokenHeader.substring(7);
-                try {
-                    // if token is valid configure Spring Security to manually set authentication
-                    if (!jwtTokenUtil.validate(jwtToken)) {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401.
-                        return;
-                    }
-                } catch (IllegalArgumentException e) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401.
-                    return;
-                } catch (ExpiredJwtException e) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401.
-                    return;
-                }
-            } else {
+            if (!jwtTokenUtil.isTokenValid(request)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401.
                 return;
             }
